@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-const EditMovieForm = () => {
+
+const AddMovieForm = () => {
 	const { push } = useHistory();
-	const { id } = useParams();
 
 	const [movie, setMovie] = useState({
 		title:"",
@@ -17,7 +17,7 @@ const EditMovieForm = () => {
 	});
 
 	useEffect(() => {
-		axios.get(`http://localhost:5000/api/movies/${id}`)
+		axios.get(`http://localhost:5000/api/movies`)
 			.then(res => {
 				console.log("AXIOS - GET RESPONSE: ", res)
 				setMovie(res.data)
@@ -34,13 +34,13 @@ const EditMovieForm = () => {
 
     const handleSubmit = (e) => {
 		e.preventDefault();
-		axios.put(`http://localhost:5000/api/movies/${id}`, movie)
+		axios.post('http://localhost:5000/api/movies', movie)
 			.then(res => {
-				console.log("AXIOS - PUT RESPONSE: ", res)
-				setMovie(res.data)
-				push(`/movies/${id}`);
+				console.log("AXIOS - POST RESPONSE: ", res)
+				setMovie(res.data);
+				push(`/movies`);
 			})
-			.catch(err => console.log('Failed to retrieve data', err));
+			.catch(err => console.log('Failed to add movie', err));
 	}
 	
 	const { title, director, genre, metascore, description } = movie;
@@ -84,4 +84,4 @@ const EditMovieForm = () => {
 	</div>);
 }
 
-export default EditMovieForm;
+export default AddMovieForm;
